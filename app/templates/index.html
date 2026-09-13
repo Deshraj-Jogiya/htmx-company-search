@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Company Search</title>
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; }
+    input { width: 100%; padding: 8px; font-size: 16px; box-sizing: border-box; }
+    table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    th, td { text-align: left; padding: 8px; border-bottom: 1px solid #ddd; }
+  </style>
+</head>
+<body>
+  <h1>Company Search</h1>
+  <input
+    type="search"
+    name="q"
+    placeholder="Search by company or industry..."
+    hx-get="/search"
+    hx-trigger="input changed delay:300ms, search"
+    hx-target="#results"
+    hx-swap="innerHTML"
+  />
+  <div id="results">
+    {% include "_results.html" %}
+  </div>
+</body>
+</html>

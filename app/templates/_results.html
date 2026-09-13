@@ -1,0 +1,16 @@
+<table id="results-table">
+  <thead>
+    <tr><th>Company</th><th>Industry</th><th>Sponsors H-1B</th></tr>
+  </thead>
+  <tbody>
+    {% for c in results %}
+    <tr>
+      <td>{{ c.name }}</td>
+      <td>{{ c.industry }}</td>
+      <td>{{ "Yes" if c.sponsors_h1b else "No" }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="3">No companies match "{{ query }}".</td></tr>
+    {% endfor %}
+  </tbody>
+</table>

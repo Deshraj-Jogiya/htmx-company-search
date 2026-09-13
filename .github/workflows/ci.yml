@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Run the real tests (FastAPI TestClient against real Jinja2-rendered HTML)
+        run: python -m pytest tests/ -v
+      - name: Boot the real app and hit its live endpoints
+        run: |
+          python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 &
+          for i in $(seq 1 20); do
+            curl -sf http://127.0.0.1:8000/ && break
+            sleep 1
+          done
+          curl -sf http://127.0.0.1:8000/ | grep -q "htmx.org"
+          curl -sf "http://127.0.0.1:8000/search?q=acme" | grep -q "Acme Analytics"
