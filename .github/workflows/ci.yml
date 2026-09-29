@@ -26,3 +26,4 @@ jobs:
           done
           curl -sf http://127.0.0.1:8000/ | grep -q "htmx.org"
           curl -sf "http://127.0.0.1:8000/search?q=acme" | grep -q "Acme Analytics"
+          curl -sf -X POST http://127.0.0.1:8000/companies/1/toggle-sponsorship | grep -q "company-row-1"

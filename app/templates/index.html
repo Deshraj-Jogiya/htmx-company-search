@@ -4,11 +4,13 @@
   <meta charset="UTF-8" />
   <title>Company Search</title>
   <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+  <script src="https://unpkg.com/htmx-ext-sse@2.2.2/sse.js"></script>
   <style>
     body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; }
     input { width: 100%; padding: 8px; font-size: 16px; box-sizing: border-box; }
     table { width: 100%; border-collapse: collapse; margin-top: 16px; }
     th, td { text-align: left; padding: 8px; border-bottom: 1px solid #ddd; }
+    button { cursor: pointer; }
   </style>
 </head>
 <body>
@@ -25,5 +27,22 @@
   <div id="results">
     {% include "_results.html" %}
   </div>
+
+  <!--
+    Real-time updates: another connected tab's inline edit shows up here
+    without polling. sse-connect opens /events; sse:refresh is the custom
+    event htmx-ext-sse fires whenever a named "refresh" SSE event arrives,
+    which re-issues a /search request for whatever the user currently has
+    typed (hx-include), not a stale copy of the page.
+  -->
+  <div
+    hx-ext="sse"
+    sse-connect="/events"
+    hx-trigger="sse:refresh"
+    hx-get="/search"
+    hx-include="[name='q']"
+    hx-target="#results"
+    hx-swap="innerHTML"
+  ></div>
 </body>
 </html>

@@ -4,11 +4,7 @@
   </thead>
   <tbody>
     {% for c in results %}
-    <tr>
-      <td>{{ c.name }}</td>
-      <td>{{ c.industry }}</td>
-      <td>{{ "Yes" if c.sponsors_h1b else "No" }}</td>
-    </tr>
+      {% include "_row.html" %}
     {% else %}
     <tr><td colspan="3">No companies match "{{ query }}".</td></tr>
     {% endfor %}
